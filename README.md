@@ -1,5 +1,16 @@
-TWRP device tree for Fairphone 3
 ==================================
+
+
+# **orangefox_device_fairphone_FP3**  
+
+  
+a "Work in Progress" device-tree to build OrangeFox-Recovery for the Fairphone 3  
+
+
+
+==================================
+
+
 ## Device specifications
 
 Basic   | Spec Sheet
