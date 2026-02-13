@@ -1,0 +1,65 @@
+
+<img width="1500" height="500" alt="image" src="https://github.com/user-attachments/assets/53b955ae-b9ae-49f2-854c-fc6e964526cb" />
+
+
+==================================
+
+
+# **orangefox_device_fairphone_FP3**  
+
+  
+a "Work in Progress" device-tree to build OrangeFox-Recovery for the Fairphone 3  
+
+
+
+==================================
+
+
+## Device specifications
+
+Basic   | Spec Sheet
+-------:|:-------------------------
+CPU     | Octa-core 1.8 GHz Cortex-A53
+CHIPSET | Qualcomm SDM632 Snapdragon 632
+GPU     | Adreno 506
+Memory  | 4GB
+Shipped Android Version | 9.0 (Pie)
+Internal Storage | 64GB
+microSD | Up to 400GB (dedicated slot)
+Battery | 3000 mAh
+Dimensions | 158 x 71.8 x 9.89 mm
+Display | 2270 x 1080 pixels, 5.65-inch IPS LCD
+Rear Camera  | 12 MP (f/1.8, 1/2.55", PDAF)
+Front Camera | 8 MP (f/2.0, 1/4", HDR)
+
+### Kernel Source
+https://code.fairphone.com/projects/fairphone-3/gpl.html
+
+### How to compile
+
+```sh
+. build/envsetup.sh
+export ALLOW_MISSING_DEPENDENCIES=true
+lunch twrp_FP3-eng
+mka bootimage
+```
+### Copyright
+ ```
+  /*
+  *  Copyright (C) 2013-19 The OmniROM Project
+  *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
+  ```
