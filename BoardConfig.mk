@@ -1,106 +1,107 @@
-#
-# Copyright 2019 The Android Open Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-DEVICE_PATH := device/fairphone/FP3
+DEVICE_PATH := device/fairphone/fp3
 
 # Architecture
-TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a53
+TARGET_ARCH 			:= arm64
+TARGET_ARCH_VARIANT 	:= armv8-a
+TARGET_CPU_ABI 			:= arm64-v8a
+TARGET_CPU_ABI2 		:=
+TARGET_CPU_VARIANT 		:= cortex-a53
+TARGET_CPU_VARIANT_RUNTIME := kryo
 
-TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH 		:= arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
-TARGET_2ND_CPU_ABI := armeabi-v7a
-TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a53
-
-TARGET_SUPPORTS_64_BIT_APPS := true
-
-# Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := msm8953
-TARGET_NO_BOOTLOADER := true
+TARGET_2ND_CPU_ABI 		:= armeabi-v7a
+TARGET_2ND_CPU_ABI2 	:= armeabi
+TARGET_2ND_CPU_VARIANT 	:= cortex-a53
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a53
 
 # Platform
-TARGET_BOARD_PLATFORM := msm8953
+BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_USES_QCOM_HARDWARE   	:= true
+TARGET_BOARD_PLATFORM     	:= msm8953
+TARGET_BOARD_PLATFORM_GPU  	:= qcom-adreno506
+
+# Bootloader stuff
+TARGET_USES_UEFI := true
+TARGET_BOOTLOADER_BOARD_NAME := FP3
 
 # Kernel
-BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := androidboot.console=ttyMSM0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1
-BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.sdhci earlycon=msm_serial_dm,0x78af000 androidboot.usbconfigfs=true loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/7824900.sdhci androidboot.super_partition=system
-BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-BOARD_KERNEL_PAGESIZE := 2048
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
+TARGET_PREBUILT_KERNEL     := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
+TARGET_KERNEL_ARCH         := $(TARGET_ARCH)
+TARGET_KERNEL_HEADER_ARCH  := $(TARGET_ARCH)
+TARGET_KERNEL_VERSION 	   := 4.9
 
-ifeq ($(strip $(TARGET_PREBUILT_KERNEL)),)
-TARGET_KERNEL_CONFIG := fp3_twrp_defconfig
-TARGET_KERNEL_SOURCE := kernel/fairphone/sdm632
-endif
+BOARD_KERNEL_BASE          := 0x80000000
+BOARD_KERNEL_PAGESIZE      := 2048
+BOARD_KERNEL_OFFSET        := 0x00008000
+BOARD_KERNEL_TAGS_OFFSET   := 0x00000100
+BOARD_RAMDISK_OFFSET       := 0x01000000
+BOARD_KERNEL_IMAGE_NAME    := Image.gz-dtb
+BOARD_BOOT_HEADER_VERSION  := 0
 
-# Retrofit dynamic partitions
-BOARD_SUPER_PARTITION_BLOCK_DEVICES := system vendor product
-BOARD_SUPER_PARTITION_METADATA_DEVICE := system
-BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE := 3221225472
-BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 1073741824
-BOARD_SUPER_PARTITION_PRODUCT_DEVICE_SIZE := 134217728
-BOARD_SUPER_PARTITION_SIZE := 4429185024
-BOARD_SUPER_PARTITION_GROUPS := dynamic_partitions
-BOARD_DYNAMIC_PARTITIONS_SIZE := $(BOARD_SUPER_PARTITION_SIZE)
-BOARD_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor odm product system_ext
+BOARD_MKBOOTIMG_ARGS  += --base $(BOARD_KERNEL_BASE)
+BOARD_MKBOOTIMG_ARGS  += --kernel_offset $(BOARD_KERNEL_OFFSET)
+BOARD_MKBOOTIMG_ARGS  += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS  += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS  += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS  += --pagesize $(BOARD_KERNEL_PAGESIZE)
+
+BOARD_KERNEL_CMDLINE := \
+	androidboot.hardware=qcom \
+	androidboot.boot_devices=soc/7824900.sdhci \
+	androidboot.bootdevice=7824900.sdhci \
+	androidboot.selinux=permissive \
+	androidboot.usbconfigfs=true \
+	androidboot.mode=recovery
+
+BOARD_KERNEL_CMDLINE += \
+	ehci-hcd.park=3 \
+	lpm_levels.sleep_disabled=1 \
+	msm_rtb.filter=0x237 \
+	firmware_class.path=/vendor/firmware_mnt/image \
+	loop.max_part=7 \
+	msm_poweroff.download_mode=0 \
+	panic=-1
+
+# Verified Boot
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+
+BOARD_AVB_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_SYSTEM_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_SYSTEM_ROLLBACK_INDEX := 0
+BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
+# Allow for building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
+BUILD_BROKEN_USES_NETWORK := true
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
 
 # Partitions
-BOARD_FLASH_BLOCK_SIZE := 131072
-BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-BOARD_DTBOIMG_PARTITION_SIZE := 8388608
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 52335451136
-BOARD_USES_RECOVERY_AS_BOOT := true
-TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_FLASH_BLOCK_SIZE			:= 131072
+BOARD_BOOTIMAGE_PARTITION_SIZE 	:= 67108864
+BOARD_DTBOIMG_PARTITION_SIZE 	:= 8388608
+BOARD_USERDATAIMAGE_PARTITION_SIZE  := 52335451136
 
-# Platform
-PLATFORM_VERSION := 16.1.0
-PLATFORM_SECURITY_PATCH := 2030-01-01
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+BOARD_VENDORIMAGE_PARTITION_SIZE	:= 1073741824
+BOARD_SYSTEMIMAGE_PARTITION_SIZE	:= 3221225472
 
-# Crypto
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-BOARD_USES_QCOM_FBE_DECRYPTION := true
-TW_USE_FSCRYPT_POLICY := 1
+# Filesystems
+TARGET_USERIMAGES_USE_EXT4  := true
+TARGET_USERIMAGES_USE_F2FS  := true
+TARGET_USES_MKE2FS          := true
 
-# TWRP
-RECOVERY_SDCARD_ON_DATA := true
+# Recovery
+TARGET_SYSTEM_PROP := \
+    $(DEVICE_PATH)/system.prop
+
+TARGET_RECOVERY_FSTAB := \
+    $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_QCOM_RTC_FIX := true
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_RESETPROP := true
-TW_NEW_ION_HEAP := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_THEME := portrait_hdpi
-TW_USE_TOOLBOX := true
-TW_OVERRIDE_SYSTEM_PROPS := "ro.build.fingerprint;ro.build.version.incremental"
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 
-# Debug flags
-#TWRP_INCLUDE_LOGCAT := true
-#TARGET_USES_LOGD := true
-
-# Installer
-AB_OTA_UPDATER := true
-USE_RECOVERY_INSTALLER := true
-RECOVERY_INSTALLER_PATH := device/fairphone/FP3/installer
+# Debugging
+TARGET_USES_LOGD := true
