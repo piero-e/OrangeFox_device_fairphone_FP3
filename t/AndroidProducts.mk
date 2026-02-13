@@ -1,3 +1,0 @@
-PRODUCT_MAKEFILES := $(LOCAL_DIR)/twrp_fp3.mk
-
-COMMON_LUNCH_CHOICES := twrp_fp3-eng
