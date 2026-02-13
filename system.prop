@@ -1,0 +1,12 @@
+# Gatekeeper
+vendor.gatekeeper.disable_spu=true
+
+# Logging
+persist.sys.qseelogd=true
+persist.logd.size=8M
+
+# Charger suspend 
+ro.charger.enable_suspend=1
+
+# ADB
+ro.adb.secure=0

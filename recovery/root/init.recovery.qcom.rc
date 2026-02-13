@@ -1,0 +1,33 @@
+import init.recovery.encryption.rc
+
+on early-init
+    loglevel 7
+    write /sys/fs/selinux/enforce 0
+    write /proc/sys/kernel/firmware_config/force_sysfs_fallback 1
+
+on init
+    setprop sys.usb.configfs 1
+    start prepfstab
+    start boot-hal-1-0
+
+on property:fstab.ready=1
+    start recovery
+
+on property:prepfstab.disable_dynamic=true && property:crypto.ready=1
+    start disabledynamic
+
+on early-fs
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+
+on boot
+    start health-hal-2-1
+
+on boot
+    setprop sys.usb.config adb
+
+service recovery /system/bin/recovery
+    socket recovery stream 422 system system
+    disabled
+    override
+    seclabel u:r:recovery:s0

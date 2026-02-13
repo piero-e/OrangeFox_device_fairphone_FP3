@@ -1,0 +1,6 @@
+service prepfstab /system/bin/prepfstab.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0

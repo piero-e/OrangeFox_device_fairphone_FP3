@@ -1,0 +1,34 @@
+# Screen settings
+OF_SCREEN_H := 2400
+OF_STATUS_H := 100
+OF_STATUS_INDENT_LEFT := 48
+OF_STATUS_INDENT_RIGHT := 48
+OF_ALLOW_DISABLE_NAVBAR := 0
+OF_OPTIONS_LIST_NUM := 9
+
+# Quick backup (Boot, sensor data)
+# OF_QUICK_BACKUP_LIST := /boot;/persist_image;
+
+# Security (Disables MTP & ADB during password prompt)
+# OF_ADVANCED_SECURITY := 1
+
+# Flashlight & LEDs
+OF_FLASHLIGHT_ENABLE := 0
+# OF_USE_GREEN_LED := 1
+
+# HOS & Custom ROMs
+OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
+OF_DEFAULT_KEYMASTER_VERSION := 4.0
+
+# Data and Metadata
+OF_UNBIND_SDCARD_F2FS := 1
+OF_FORCE_CASEFOLDING := 1
+
+# Workarounds
+OF_LOOP_DEVICE_ERRORS_TO_LOG := 1
+OF_MANUAL_ROOT_VENDOR_ERROR_FIX := 1
+OF_SKIP_FBE_DECRYPTION := 1
+
+# Fix clock/time issues
+OF_USE_LEGACY_TIME_FIXUP := 1
+OF_ENABLE_FRP_ADDON := 1
