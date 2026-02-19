@@ -2,17 +2,17 @@
 <img width="1500" height="500" alt="image" src="https://github.com/user-attachments/assets/53b955ae-b9ae-49f2-854c-fc6e964526cb" />
 
 
-==================================
+================================================================================
 
 
-# **orangefox_device_fairphone_FP3**  
+# orangefox_device_fairphone_FP3  
 
   
 a "Work in Progress" device-tree to build OrangeFox-Recovery for the Fairphone 3  
 
 
 
-==================================
+================================================================================
 
 
 ## Device specifications
