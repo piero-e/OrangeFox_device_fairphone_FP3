@@ -97,7 +97,7 @@ cd ~/OrangeFox # (or whichever directory has the synced manifest)
 ### Copyright
 
 ```
-# Copyright (C) 2013-19 The OmniROM Project
+# Copyright (C) 2013-2019 The OmniROM Project
 # Copyright (C) 2019-2025 OrangeFox Recovery Project
 # 
 # 
