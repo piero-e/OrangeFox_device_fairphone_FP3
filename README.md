@@ -61,7 +61,7 @@ add your specific device tree
 cd ~/fox_12.1 # (or whichever directory hosts the synced manifest)
 git clone https://gitlab.com/OrangeFox/device/vendorname/devicename.git device/vendorname/devicename
 ```
-or use my local_manifests
+~~or use my local_manifests~~
 
 
 
